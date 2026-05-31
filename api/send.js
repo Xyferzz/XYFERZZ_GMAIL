@@ -1,12 +1,22 @@
-export default async function handler(req,res){
- if(req.method!=='POST') return res.status(405).json({error:'Method not allowed'});
+export default async function handler(req, res) {
 
- const BOT_TOKEN=process.env.BOT_TOKEN;
- const CHAT_ID=process.env.CHAT_ID;
+  try {
 
- const d=req.body;
+    if (req.method !== 'POST') {
+      return res.status(405).json({
+        error: 'Method not allowed'
+      });
+    }
 
- const text=`📥 STORAN BARU
+    const BOT_TOKEN = process.env.BOT_TOKEN;
+    const CHAT_ID = process.env.CHAT_ID;
+
+    console.log("BOT:", BOT_TOKEN ? "ADA" : "KOSONG");
+    console.log("CHAT:", CHAT_ID);
+
+    const d = req.body;
+
+    const text = `📥 STORAN BARU
 
 👤 Nama : ${d.nama}
 🎯 Penerima : ${d.penerima}
@@ -19,11 +29,39 @@ export default async function handler(req,res){
 📧 Gmail :
 ${d.gmailList}`;
 
- await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
-   method:'POST',
-   headers:{'Content-Type':'application/json'},
-   body:JSON.stringify({chat_id:CHAT_ID,text})
- });
+    const telegram = await fetch(
+      `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text
+        })
+      }
+    );
 
- res.status(200).json({success:true});
+    const result = await telegram.json();
+
+    console.log("TELEGRAM:", result);
+
+    if (!result.ok) {
+      return res.status(500).json(result);
+    }
+
+    return res.status(200).json({
+      success: true
+    });
+
+  } catch (err) {
+
+    console.error(err);
+
+    return res.status(500).json({
+      error: err.message
+    });
+
+  }
 }
