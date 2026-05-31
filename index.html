@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xyferzz Gmail Boost</title>
+<style>
+body{background:#050505;color:#fff;font-family:Segoe UI,sans-serif;max-width:800px;margin:auto;padding:20px}
+.card{background:#111;border:1px solid #00bfff;border-radius:16px;padding:18px;margin:15px 0;box-shadow:0 0 20px rgba(0,191,255,.2)}
+.logo{text-align:center;font-size:32px;color:#00bfff}
+input{width:100%;padding:12px;margin-top:6px;background:#0a0a0a;color:#fff;border:1px solid #333;border-radius:10px}
+button{padding:12px;border-radius:10px;border:none;cursor:pointer}
+.add{width:100%;background:#111;color:#00bfff;border:1px solid #00bfff}
+.send{width:100%;background:#00bfff;color:#fff;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="card"><div class="logo">XYFERZZ GMAIL BOOST</div></div>
+
+<div class="card">
+<h3>Rules</h3>
+<ol>
+<li>Isi data dengan benar.</li>
+<li>Data salah bukan tanggung jawab admin.</li>
+<li>Edit rules langsung di HTML.</li>
+</ol>
+</div>
+
+<div class="card">
+<label>Nama</label><input id="nama">
+<label>Nama Penerima</label><input id="penerima">
+<label>Nomor Dana / Pay</label><input id="dana">
+<label>Nomor WhatsApp</label><input id="wa">
+
+<h3>Gmail</h3>
+<div id="gmails">
+<input class="gmail" placeholder="1. Gmail">
+</div>
+<br>
+<button class="add" onclick="addGmail()">+ Tambah Gmail</button>
+</div>
+
+<div class="card">
+<div>Jumlah Gmail: <span id="jumlah">1</span></div>
+<div>Harga/Gmail: Rp 3.500</div>
+<div>Total: Rp <span id="total">3500</span></div>
+</div>
+
+<button class="send" onclick="sendData()">KIRIM STORAN</button>
+
+<script>
+const HARGA=3500;
+
+function update(){
+ const n=document.querySelectorAll('.gmail').length;
+ document.getElementById('jumlah').innerText=n;
+ document.getElementById('total').innerText=(n*HARGA).toLocaleString('id-ID');
+}
+
+function addGmail(){
+ const c=document.getElementById('gmails');
+ const i=document.createElement('input');
+ i.className='gmail';
+ i.placeholder=(c.children.length+1)+'. Gmail';
+ c.appendChild(i);
+ update();
+}
+
+async function sendData(){
+ const gmails=[...document.querySelectorAll('.gmail')].map(x=>x.value).filter(Boolean);
+
+ const data={
+  nama:nama.value,
+  penerima:penerima.value,
+  dana:dana.value,
+  wa:wa.value,
+  totalGmail:gmails.length,
+  totalHarga:gmails.length*HARGA,
+  gmailList:gmails.join('\n')
+ };
+
+ const r=await fetch('/api/send',{
+  method:'POST',
+  headers:{'Content-Type':'application/json'},
+  body:JSON.stringify(data)
+ });
+
+ alert(r.ok?'Berhasil dikirim':'Gagal mengirim');
+}
+</script>
+</body>
+</html>
