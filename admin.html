@@ -91,6 +91,8 @@ ACC SEKARANG
 
 async function acc(){
 
+try{
+
 const password =
 document.getElementById('password').value;
 
@@ -100,8 +102,9 @@ document.getElementById('requestId').value;
 const approvedCount =
 document.getElementById('approvedCount').value;
 
-const r =
-await fetch('/api/acc',{
+alert('Mengirim...');
+
+const r = await fetch('/api/acc',{
 
 method:'POST',
 
@@ -110,34 +113,40 @@ headers:{
 },
 
 body:JSON.stringify({
-
 password,
 requestId,
 approvedCount
-
 })
 
 });
 
 const d = await r.json();
 
+console.log(d);
+
 if(r.ok){
 
-document.getElementById('result').innerHTML=
+alert('ACC BERHASIL');
 
-`<br>
+document.getElementById('result').innerHTML =
+`
 ✅ BERHASIL<br><br>
-
 User : ${d.username}<br>
-
 Saldo Ditambah :
-Rp${Number(d.saldoTambah)
-.toLocaleString('id-ID')}
+Rp${Number(d.saldoTambah).toLocaleString('id-ID')}
 `;
 
 }else{
 
-alert(d.error);
+alert('ERROR: ' + d.error);
+
+}
+
+}catch(err){
+
+alert('JS ERROR: ' + err.message);
+
+console.log(err);
 
 }
 
