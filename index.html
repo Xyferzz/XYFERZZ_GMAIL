@@ -3,454 +3,300 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ROLAN GMAIL BOOST</title>
+
+<title>ROLAN GMAIL LOGIN</title>
 
 <style>
 :root{
   --bg:#020508;
-  --card:rgba(255, 255, 255, 0.02);
-  --stroke:rgba(0, 255, 179, 0.12);
+  --card:rgba(255,255,255,0.03);
+  --stroke:rgba(0,255,179,0.12);
   --green:#00ffb3;
   --cyan:#00d4ff;
   --text:#eafff7;
   --muted:#7aa89a;
-  --neon-glow: rgba(0, 255, 179, 0.35);
 }
 
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-family:'Segoe UI',sans-serif;
 }
 
 body{
-  background:
-    radial-gradient(circle at 10% 15%, rgba(0, 255, 179, 0.12), transparent 40%),
-    radial-gradient(circle at 90% 10%, rgba(0, 212, 255, 0.1), transparent 45%),
-    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.5), transparent),
-    var(--bg);
-  color:var(--text);
+  min-height:100vh;
   display:flex;
   justify-content:center;
-  padding:40px 16px;
-  min-height: 100vh;
+  align-items:center;
+  background:
+  radial-gradient(circle at top left, rgba(0,255,179,.15), transparent 35%),
+  radial-gradient(circle at top right, rgba(0,212,255,.1), transparent 35%),
+  #020508;
+  color:white;
+  padding:20px;
 }
 
-/* WRAPPER */
-.wrapper{
+.card{
   width:100%;
-  max-width:720px;
-}
-
-/* HEADER */
-.header{
-  text-align:center;
-  margin-bottom:30px;
-  position: relative;
+  max-width:420px;
+  background:var(--card);
+  border:1px solid var(--stroke);
+  border-radius:24px;
+  padding:30px;
+  backdrop-filter:blur(25px);
+  box-shadow:
+  0 10px 40px rgba(0,0,0,.5),
+  inset 0 0 10px rgba(255,255,255,.02);
 }
 
 .logo{
+  text-align:center;
   font-size:34px;
   font-weight:900;
-  letter-spacing:3px;
-  background: linear-gradient(90deg, #fff, var(--green), var(--cyan), #fff);
-  background-size: 200% auto;
+  margin-bottom:10px;
+  background:linear-gradient(90deg,#fff,var(--green),var(--cyan));
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
-  animation: shine 4s linear infinite;
-  text-shadow: 0 0 20px rgba(0, 255, 179, 0.2);
 }
 
 .sub{
-  font-size:11px;
-  letter-spacing:6px;
-  color:var(--green);
-  font-weight: 700;
-  opacity:.9;
-  margin-top:6px;
-  text-shadow: 0 0 8px rgba(0, 255, 179, 0.4);
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:28px;
 }
 
-/* CARD */
-.card{
-  background: var(--card);
-  border: 1px solid var(--stroke);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-radius:18px;
-  padding:24px;
-  margin-bottom:20px;
-  box-shadow: 
-    0 8px 32px 0 rgba(0, 0, 0, 0.37),
-    inset 0 0 12px rgba(255, 255, 255, 0.01);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.card:hover{
-  transform: translateY(-5px);
-  border-color: rgba(0, 255, 179, 0.4);
-  box-shadow: 
-    0 12px 40px 0 rgba(0, 255, 179, 0.08),
-    inset 0 0 15px rgba(0, 255, 179, 0.03);
-}
-
-
-/* TITLE */
-h3{
-  color:var(--green);
-  margin-bottom:12px;
-  font-size:16px;
-}
-
-/* MEDIA */
-.media{
-  height:200px;
-  border-radius:14px;
+.switch{
   display:flex;
-  align-items:center;
-  justify-content:center;
-  border: 1px dashed rgba(0, 255, 179, 0.25);
-  background: linear-gradient(145deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
+  margin-bottom:20px;
+  gap:10px;
+}
+
+.switch button{
+  flex:1;
+  padding:13px;
+  border:none;
+  border-radius:14px;
+  background:#071015;
   color:var(--muted);
-  font-size: 14px;
-  letter-spacing: 1px;
-  font-weight: 600;
-  transition: .3s;
+  font-weight:700;
+  cursor:pointer;
+  transition:.3s;
 }
 
-.card:hover .media {
-  border-color: var(--green);
-  background: rgba(0,0,0,0.5);
-  color: var(--green);
-  text-shadow: 0 0 10px rgba(0, 255, 179, 0.3);
+.switch button.active{
+  background:linear-gradient(90deg,var(--green),var(--cyan));
+  color:#00150a;
 }
 
-/* RULES */
-ul{
-  margin-left:20px;
-  color:var(--muted);
-  line-height:1.9;
-  font-size:13.5px;
-}
-
-ul li::marker {
-  color: var(--green);
-}
-
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
+.form{
+  display:flex;
+  flex-direction:column;
   gap:14px;
 }
 
-@media(max-width:650px){
-  .grid{grid-template-columns:1fr;}
-}
-
-/* INPUT */
 input{
-  padding:14px;
-  border-radius:12px;
-  border:1px solid rgba(0, 255, 179, 0.12);
-  background:rgba(0, 0, 0, 0.45);
+  padding:15px;
+  border-radius:14px;
+  border:1px solid rgba(0,255,179,.12);
+  background:rgba(0,0,0,.45);
   color:white;
   outline:none;
-  font-size: 14px;
-  transition: all 0.25s ease;
-}
-
-input::placeholder{
-  color: #4a7367;
+  font-size:14px;
 }
 
 input:focus{
   border-color:var(--green);
-  background:rgba(0, 0, 0, 0.6);
-  box-shadow:0 0 18px rgba(0, 255, 179, 0.15);
+  box-shadow:0 0 15px rgba(0,255,179,.15);
 }
 
-/* GMAIL */
-.gmail-list{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  margin-top:10px;
-  max-height:180px;
-  overflow-y:auto;
-  padding-right: 4px;
-}
-
-.gmail-list::-webkit-scrollbar {
-  width: 6px;
-}
-.gmail-list::-webkit-scrollbar-thumb {
-  background: rgba(0, 255, 179, 0.2);
-  border-radius: 10px;
-}
-.gmail-list::-webkit-scrollbar-thumb:hover {
-  background: var(--green);
-}
-
-.btn-add{
-  margin-top:12px;
-  width:100%;
-  padding:12px;
-  border-radius:12px;
-  border: 1px dashed rgba(0, 255, 179, 0.3);
-  background:rgba(0, 255, 179, 0.02);
-  color:var(--green);
-  font-weight: 600;
-  font-size: 13px;
-  cursor:pointer;
-  transition:all 0.2s;
-}
-
-.btn-add:hover{
-  background:rgba(0, 255, 179, 0.08);
-  border-style: solid;
-  border-color: var(--green);
-  box-shadow: 0 0 10px rgba(0, 255, 179, 0.05);
-}
-
-/* SUMMARY */
-.summary{
-  margin-top:18px;
-  padding:16px;
-  border-radius:14px;
-  display:flex;
-  justify-content:between;
-  align-items: center;
-  background:rgba(0, 0, 0, 0.5);
-  border:1px solid rgba(0, 255, 179, 0.1);
-}
-
-.summary div {
-  width: 100%;
-}
-
-.price{
-  color:var(--green);
-  font-weight:900;
-  font-size: 18px;
-  text-align: right;
-  text-shadow: 0 0 10px rgba(0, 255, 179, 0.3);
-}
-
-/* PRICE CARD */
-.price-box{
-  text-align:center;
-  background: linear-gradient(145deg, rgba(0, 255, 179, 0.03), rgba(0, 212, 255, 0.01)), var(--card);
-}
-
-.price-box h2{
-  font-size:32px;
-  color:var(--cyan);
-  letter-spacing:1.5px;
-  font-weight: 900;
-  text-shadow: 0 0 25px rgba(0, 212, 255, 0.4);
-  margin-top: 5px;
-}
-
-/* BUTTON */
-.send{
-  width:100%;
-  padding:16px;
+.btn{
+  padding:15px;
   border:none;
   border-radius:14px;
+  background:linear-gradient(90deg,var(--green),var(--cyan));
+  color:#00150a;
   font-weight:900;
-  font-size: 15px;
-  letter-spacing: 1px;
   cursor:pointer;
-  color:#00150a;
-  background: linear-gradient(90deg, var(--green), var(--cyan), var(--green));
-  background-size: 200% auto;
-  box-shadow:0 8px 30px rgba(0, 255, 179, 0.25);
-  transition:all 0.3s ease;
-  animation: shine 3s ease infinite;
+  margin-top:5px;
+  transition:.3s;
 }
 
-.send:hover{
-  transform: translateY(-2px);
-  box-shadow:0 12px 35px rgba(0, 255, 179, 0.4);
-  filter: brightness(1.1);
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 20px rgba(0,255,179,.2);
 }
 
-.send:active{
-  transform: translateY(1px);
-}
-
-/* SOCIAL */
-.social{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-
-.social a{
-  text-decoration:none;
-  padding:14px;
+.info{
   text-align:center;
-  border-radius:12px;
-  border:1px solid rgba(0, 255, 179, 0.15);
-  color:var(--text);
-  font-size: 14px;
-  font-weight: 600;
-  background: rgba(0,0,0,0.2);
-  transition:all 0.25s ease;
-}
-
-.social a:hover{
-  background:var(--green);
-  color:#00150a;
-  font-weight:700;
-  box-shadow: 0 0 15px rgba(0, 255, 179, 0.25);
-  border-color: var(--green);
-}
-
-/* FOOTER */
-footer{
-  text-align:center;
-  font-size:12px;
+  margin-top:16px;
+  font-size:13px;
   color:var(--muted);
-  margin-top:25px;
-  letter-spacing: 0.5px;
 }
 
-footer span{
-  color:var(--green);
-  font-weight: 600;
+.loading{
+  position:fixed;
+  inset:0;
+  background:#020508;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+  flex-direction:column;
+  gap:18px;
 }
 
-/* KEYFRAMES */
-@keyframes shine {
-  0% { background-position: 0% center; }
-  50% { background-position: 100% center; }
-  100% { background-position: 0% center; }
+.loader{
+  width:65px;
+  height:65px;
+  border-radius:50%;
+  border:5px solid rgba(255,255,255,.08);
+  border-top:5px solid var(--green);
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
 }
 </style>
 </head>
-
 <body>
 
-<div class="wrapper">
+<div class="loading" id="loading">
+  <div class="loader"></div>
+  <div style="color:var(--green);font-weight:700;">
+    ROLAN GMAIL
+  </div>
+</div>
 
-<div class="header">
-    <div class="sub">Platform setor Gmail Terbaik 2026</div>
-    <div class="logo">ROLAN GMAIL</div>
+<div class="card">
+
+  <div class="logo">ROLAN GMAIL</div>
+  <div class="sub">Platform Gmail Boost 2026</div>
+
+  <div class="switch">
+    <button class="active" id="loginTab">LOGIN</button>
+    <button id="registerTab">DAFTAR</button>
   </div>
 
-  <div class="card">
-    <div class="media">VIDEO / BANNER 16:9</div>
+  <div class="form">
+
+    <input type="text" id="username" placeholder="Username">
+
+    <input type="password" id="password" placeholder="Password">
+
+    <button class="btn" id="submitBtn">
+      LOGIN
+    </button>
+
   </div>
 
-  <div class="card">
-    <h3>Rules Create</h3>
-    <ul>
-      <li>Isi data dengan benar sebelum mengirim</li>
-      <li>Kesalahan input bukan tanggung jawab sistem</li>
-      <li>Proses berjalan otomatis sesuai antrean</li>
-      <li>Dilarang spam input berulang</li>
-    </ul>
+  <div class="info" id="info">
+    Login ke akun kamu
   </div>
-
-  <div class="card price-box">
-    <h3>HARGA / RATE</h3>
-    <h1>Rp 3.500</h1>
-  </div>
-
-  <div class="card">
-    <h3>Setorkan Gmail</h3>
-
-    <div class="grid">
-      <input id="nama" placeholder="Nama Anda">
-      <input id="penerima" placeholder="Nama Penerima">
-      <input id="dana" placeholder="Dana / E-Wallet">
-      <input id="wa" placeholder="WhatsApp Aktif">
-    </div>
-
-    <div style="margin-top:12px">
-      <label style="font-size:12px;color:var(--muted);font-weight:600;letter-spacing:0.5px;">Gmail List</label>
-
-      <div id="gmails" class="gmail-list">
-        <input class="gmail" placeholder="1. Gmail">
-      </div>
-
-      <button class="btn-add" onclick="addGmail()">+ Tambah Gmail</button>
-    </div>
-
-    <div class="summary">
-      <div>Total (<span id="jumlah">1</span>) Gmail</div>
-      <div class="price">Rp <span id="total">3.500</span></div>
-    </div>
-  </div>
-
-  <button class="send" onclick="sendData()">KIRIM STORAN</button>
-
-  <div class="card" style="margin-top: 20px;">
-    <h3>COMMUNITY</h3>
-    <div class="social">
-      <a href="#">WhatsApp</a>
-      <a href="#">Channel</a>
-    </div>
-  </div>
-
-  <footer>
-    © 2026 <span>Created By Xyferzz || mau web kayak gini? Order ke T.me/Xyferzz</span>
-  </footer>
 
 </div>
 
 <script>
-const HARGA = 3500;
 
-function update(){
-  const n = document.querySelectorAll('.gmail').length;
-  document.getElementById('jumlah').innerText = n;
-  document.getElementById('total').innerText = (n * HARGA).toLocaleString('id-ID');
+setTimeout(()=>{
+  document.getElementById('loading').style.display='none';
+},1500);
+
+if(localStorage.getItem('user')){
+  window.location='dashboard.html';
 }
 
-function addGmail(){
-  const c = document.getElementById('gmails');
-  const i = document.createElement('input');
-  i.className = 'gmail';
-  i.placeholder = (c.children.length + 1) + '. Gmail';
-  c.appendChild(i);
-  update();
-  c.scrollTop = c.scrollHeight;
-}
+let mode='login';
 
-async function sendData(){
-  const gmails = [...document.querySelectorAll('.gmail')].map(x => x.value).filter(Boolean);
+const loginTab=document.getElementById('loginTab');
+const registerTab=document.getElementById('registerTab');
+const submitBtn=document.getElementById('submitBtn');
+const info=document.getElementById('info');
 
-  if(!nama.value || !dana.value || gmails.length === 0){
-    alert('Lengkapi data dulu!');
-    return;
+loginTab.onclick=()=>{
+  mode='login';
+
+  loginTab.classList.add('active');
+  registerTab.classList.remove('active');
+
+  submitBtn.innerText='LOGIN';
+  info.innerText='Login ke akun kamu';
+};
+
+registerTab.onclick=()=>{
+  mode='register';
+
+  registerTab.classList.add('active');
+  loginTab.classList.remove('active');
+
+  submitBtn.innerText='DAFTAR';
+  info.innerText='Buat akun baru';
+};
+
+submitBtn.onclick=async()=>{
+
+  const username=document.getElementById('username').value;
+  const password=document.getElementById('password').value;
+
+  if(!username || !password){
+    return alert('Lengkapi data!');
   }
-
-  const data = {
-    nama:nama.value,
-    penerima:penerima.value,
-    dana:dana.value,
-    wa:wa.value,
-    totalGmail:gmails.length,
-    totalHarga:gmails.length * HARGA,
-    gmailList:gmails.join('\n')
-  };
 
   try{
-    const r = await fetch('/api/send',{
+
+    const url=
+      mode==='login'
+      ? '/api/login'
+      : '/api/register';
+
+    const r=await fetch(url,{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(data)
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        username,
+        password
+      })
     });
 
-    alert(r.ok ? 'Berhasil dikirim!' : 'Gagal kirim!');
+    const d=await r.json();
+
+    if(!r.ok){
+      return alert(d.error || 'Error');
+    }
+
+    if(mode==='register'){
+      alert('Akun berhasil dibuat!');
+      mode='login';
+
+      loginTab.classList.add('active');
+      registerTab.classList.remove('active');
+
+      submitBtn.innerText='LOGIN';
+
+      return;
+    }
+
+    localStorage.setItem(
+      'user',
+      JSON.stringify(d.user)
+    );
+
+    window.location='dashboard.html';
+
   }catch(e){
-    alert('Network error!');
+
+    alert('Network Error');
+
   }
-}
+
+};
+
 </script>
 
 </body>
