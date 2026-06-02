@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Withdraw - ROLAN GMAIL</title>
+
+<style>
+
+:root{
+ --bg:#020508;
+ --card:rgba(255,255,255,.03);
+ --stroke:rgba(0,255,179,.12);
+ --green:#00ffb3;
+ --cyan:#00d4ff;
+ --text:#eafff7;
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ font-family:Segoe UI,sans-serif;
+}
+
+body{
+ background:
+ radial-gradient(circle at top left, rgba(0,255,179,.15), transparent 35%),
+ radial-gradient(circle at top right, rgba(0,212,255,.1), transparent 35%),
+ var(--bg);
+ color:white;
+ min-height:100vh;
+ padding:20px;
+}
+
+.container{
+ max-width:700px;
+ margin:auto;
+}
+
+.card{
+ background:var(--card);
+ border:1px solid var(--stroke);
+ border-radius:18px;
+ padding:20px;
+ margin-bottom:15px;
+}
+
+h2{
+ color:var(--green);
+ margin-bottom:15px;
+}
+
+input{
+ width:100%;
+ padding:15px;
+ border-radius:12px;
+ border:1px solid rgba(0,255,179,.1);
+ background:rgba(0,0,0,.4);
+ color:white;
+ outline:none;
+ margin-top:10px;
+}
+
+button{
+ width:100%;
+ padding:15px;
+ border:none;
+ border-radius:14px;
+ cursor:pointer;
+ font-weight:900;
+ margin-top:15px;
+ background:
+ linear-gradient(
+ 90deg,
+ var(--green),
+ var(--cyan)
+ );
+}
+
+.saldo{
+ font-size:32px;
+ font-weight:900;
+ color:var(--green);
+}
+
+.back{
+ display:inline-block;
+ margin-bottom:15px;
+ color:white;
+ text-decoration:none;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<a href="dashboard.html" class="back">
+← Dashboard
+</a>
+
+<div class="card">
+
+<h2>Saldo Anda</h2>
+
+<div class="saldo" id="saldo">
+Rp 0
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Withdraw</h2>
+
+<input
+id="nominal"
+type="number"
+placeholder="Nominal"
+/>
+
+<input
+id="dana"
+placeholder="DANA / OVO / GOPAY"
+/>
+
+<input
+id="atasNama"
+placeholder="Atas Nama"
+/>
+
+<button onclick="withdraw()">
+AJUKAN WITHDRAW
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const user =
+JSON.parse(
+ localStorage.getItem('user')
+);
+
+if(!user){
+ location='index.html';
+}
+
+async function loadUser(){
+
+ const r =
+ await fetch(
+ `/api/session?username=${user.username}`
+ );
+
+ const d =
+ await r.json();
+
+ document.getElementById(
+ 'saldo'
+ ).innerText =
+ 'Rp ' +
+ Number(
+ d.saldo || 0
+ ).toLocaleString('id-ID');
+
+}
+
+loadUser();
+
+async function withdraw(){
+
+ const nominal =
+ document.getElementById('nominal').value;
+
+ const dana =
+ document.getElementById('dana').value;
+
+ const atasNama =
+ document.getElementById('atasNama').value;
+
+ if(
+ !nominal ||
+ !dana ||
+ !atasNama
+ ){
+  return alert('Lengkapi data');
+ }
+
+ const r =
+ await fetch(
+ '/api/withdraw',
+ {
+  method:'POST',
+  headers:{
+   'Content-Type':
+   'application/json'
+  },
+  body:JSON.stringify({
+
+   username:user.username,
+
+   nominal,
+
+   dana,
+
+   atasNama
+
+  })
+ });
+
+ const d =
+ await r.json();
+
+ if(r.ok){
+
+  alert(
+   'Withdraw berhasil diajukan'
+  );
+
+ }else{
+
+  alert(
+   d.error
+  );
+
+ }
+
+}
+
+</script>
+
+</body>
+</html>
