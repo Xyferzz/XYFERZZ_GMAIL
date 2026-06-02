@@ -1,3 +1,10 @@
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SECRET_KEY
+);
+
 export default async function handler(req, res) {
 
   try {
@@ -8,26 +15,48 @@ export default async function handler(req, res) {
       });
     }
 
+    const {
+      username,
+      nama,
+      wa,
+      gmailList,
+      totalGmail
+    } = req.body;
+
+    const { data, error } = await supabase
+      .from('requests')
+      .insert([
+        {
+          username,
+          nama,
+          wa,
+          gmail_list: gmailList,
+          status: 'pending',
+          approved_count: 0
+        }
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(500).json({
+        error: error.message
+      });
+    }
+
     const BOT_TOKEN = process.env.BOT_TOKEN;
     const CHAT_ID = process.env.CHAT_ID;
 
-    console.log("BOT:", BOT_TOKEN ? "ADA" : "KOSONG");
-    console.log("CHAT:", CHAT_ID);
-
-    const d = req.body;
-
     const text = `📥 STORAN BARU
 
-👤 Nama : ${d.nama}
-🎯 Penerima : ${d.penerima}
-💳 Dana : ${d.dana}
-📱 WhatsApp : ${d.wa}
+ID: ${data.id}
 
-📦 Total Gmail : ${d.totalGmail}
-💵 Total Harga : Rp${d.totalHarga}
+User: ${username}
+Total Gmail: ${totalGmail}
 
-📧 Gmail :
-${d.gmailList}`;
+All Gmail:
+
+${gmailList}`;
 
     const telegram = await fetch(
       `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
@@ -45,23 +74,21 @@ ${d.gmailList}`;
 
     const result = await telegram.json();
 
-    console.log("TELEGRAM:", result);
-
     if (!result.ok) {
       return res.status(500).json(result);
     }
 
     return res.status(200).json({
-      success: true
+      success: true,
+      id: data.id
     });
 
   } catch (err) {
-
-    console.error(err);
 
     return res.status(500).json({
       error: err.message
     });
 
   }
+
 }
