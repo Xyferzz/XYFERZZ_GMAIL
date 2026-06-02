@@ -19,8 +19,10 @@ export default async function handler(req,res){
   username,
   nominal,
   dana,
-  atasNama
- } = req.body;
+  nomor,
+  atas_nama: atasNama,
+  status: 'pending'
+  } = req.body;
 
  const { data:user } =
  await supabase
