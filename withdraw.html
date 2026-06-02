@@ -173,12 +173,16 @@ async function withdraw(){
  const dana =
  document.getElementById('dana').value;
 
+ const nomor =
+document.getElementById('nomor').value;
+
  const atasNama =
  document.getElementById('atasNama').value;
 
  if(
  !nominal ||
  !dana ||
+ !nomor ||
  !atasNama
  ){
   return alert('Lengkapi data');
