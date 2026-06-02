@@ -17,11 +17,19 @@ export default async function handler(req, res) {
       });
     }
 
+    console.log('BODY:', req.body);
+
     const {
       password,
       requestId,
       approvedCount
     } = req.body;
+
+    if (!process.env.ADMIN_PASSWORD) {
+      return res.status(500).json({
+        error: 'ADMIN_PASSWORD belum ada di Vercel'
+      });
+    }
 
     if (password !== process.env.ADMIN_PASSWORD) {
       return res.status(401).json({
@@ -33,10 +41,16 @@ export default async function handler(req, res) {
       await supabase
         .from('requests')
         .select('*')
-        .eq('id', requestId)
+        .eq('id', Number(requestId))
         .single();
 
-    if (reqError || !requestData) {
+    if (reqError) {
+      return res.status(500).json({
+        error: reqError.message
+      });
+    }
+
+    if (!requestData) {
       return res.status(404).json({
         error: 'Request tidak ditemukan'
       });
@@ -52,33 +66,50 @@ export default async function handler(req, res) {
         .eq('username', requestData.username)
         .single();
 
-    if (userError || !userData) {
-      return res.status(404).json({
-        error: 'User tidak ditemukan'
+    if (userError) {
+      return res.status(500).json({
+        error: userError.message
       });
     }
 
-    await supabase
-      .from('users')
-      .update({
-        saldo:
-          Number(userData.saldo) +
-          tambahanSaldo
-      })
-      .eq('username', requestData.username);
+    const saldoBaru =
+      Number(userData.saldo || 0) +
+      tambahanSaldo;
 
-    await supabase
-      .from('requests')
-      .update({
-        status: 'approved',
-        approved_count: approvedCount
-      })
-      .eq('id', requestId);
+    const { error: saldoError } =
+      await supabase
+        .from('users')
+        .update({
+          saldo: saldoBaru
+        })
+        .eq('username', requestData.username);
+
+    if (saldoError) {
+      return res.status(500).json({
+        error: saldoError.message
+      });
+    }
+
+    const { error: updateError } =
+      await supabase
+        .from('requests')
+        .update({
+          status: 'approved',
+          approved_count: Number(approvedCount)
+        })
+        .eq('id', Number(requestId));
+
+    if (updateError) {
+      return res.status(500).json({
+        error: updateError.message
+      });
+    }
 
     return res.status(200).json({
       success: true,
       username: requestData.username,
-      saldoTambah: tambahanSaldo
+      saldoTambah: tambahanSaldo,
+      saldoBaru
     });
 
   } catch (err) {
