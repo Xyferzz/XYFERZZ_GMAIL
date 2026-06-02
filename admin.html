@@ -126,24 +126,6 @@ const text = await r.text();
 
 alert(text);
 
-return;
-
-alert('ACC BERHASIL');
-
-document.getElementById('result').innerHTML =
-`
-✅ BERHASIL<br><br>
-User : ${d.username}<br>
-Saldo Ditambah :
-Rp${Number(d.saldoTambah).toLocaleString('id-ID')}
-`;
-
-}else{
-
-alert('ERROR: ' + d.error);
-
-}
-
 }catch(err){
 
 alert('JS ERROR: ' + err.message);
