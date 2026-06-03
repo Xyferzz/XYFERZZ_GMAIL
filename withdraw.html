@@ -3,230 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Withdraw - ROLAN GMAIL</title>
+<title>Withdraw</title>
 
 <style>
-
-:root{
- --bg:#020508;
- --card:rgba(255,255,255,.03);
- --stroke:rgba(0,255,179,.12);
- --green:#00ffb3;
- --cyan:#00d4ff;
- --text:#eafff7;
-}
-
-*{
- margin:0;
- padding:0;
- box-sizing:border-box;
- font-family:Segoe UI,sans-serif;
-}
-
 body{
- background:
- radial-gradient(circle at top left, rgba(0,255,179,.15), transparent 35%),
- radial-gradient(circle at top right, rgba(0,212,255,.1), transparent 35%),
- var(--bg);
- color:white;
- min-height:100vh;
- padding:20px;
-}
-
-.container{
- max-width:700px;
- margin:auto;
+  background:#020508;
+  color:#fff;
+  font-family:Segoe UI;
+  padding:20px;
 }
 
 .card{
- background:var(--card);
- border:1px solid var(--stroke);
- border-radius:18px;
- padding:20px;
- margin-bottom:15px;
-}
-
-h2{
- color:var(--green);
- margin-bottom:15px;
+  max-width:500px;
+  margin:auto;
+  background:#111;
+  padding:20px;
+  border-radius:15px;
+  border:1px solid #00ffb3;
 }
 
 input{
- width:100%;
- padding:15px;
- border-radius:12px;
- border:1px solid rgba(0,255,179,.1);
- background:rgba(0,0,0,.4);
- color:white;
- outline:none;
- margin-top:10px;
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:10px;
+  border:none;
+  outline:none;
 }
 
 button{
- width:100%;
- padding:15px;
- border:none;
- border-radius:14px;
- cursor:pointer;
- font-weight:900;
- margin-top:15px;
- background:
- linear-gradient(
- 90deg,
- var(--green),
- var(--cyan)
- );
+  width:100%;
+  padding:12px;
+  margin-top:15px;
+  background:#00ffb3;
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
 }
-
-.saldo{
- font-size:32px;
- font-weight:900;
- color:var(--green);
-}
-
-.back{
- display:inline-block;
- margin-bottom:15px;
- color:white;
- text-decoration:none;
-}
-
 </style>
 </head>
+
 <body>
-
-<div class="container">
-
-<a href="dashboard.html" class="back">
-← Dashboard
-</a>
-
-<div class="card">
-
-<h2>Saldo Anda</h2>
-
-<div class="saldo" id="saldo">
-Rp 0
-</div>
-
-</div>
 
 <div class="card">
 
 <h2>Withdraw</h2>
 
+<div id="saldo">Loading...</div>
+
 <input id="nominal" placeholder="Nominal">
-
 <input id="dana" placeholder="DANA / OVO / GOPAY">
-
 <input id="nomor" placeholder="Nomor E-Wallet">
-
 <input id="atasNama" placeholder="Atas Nama">
 
 <button onclick="withdraw()">
-AJUKAN WITHDRAW
+AJUKAN WD
 </button>
-
-</div>
 
 </div>
 
 <script>
 
-const user =
-JSON.parse(
- localStorage.getItem('user')
-);
+const user = JSON.parse(localStorage.getItem('user'));
 
 if(!user){
- location='index.html';
+ location.href = "index.html";
 }
 
-async function loadUser(){
+async function loadSaldo(){
+ const r = await fetch(`/api/session?username=${user.username}`);
+ const d = await r.json();
 
- const r =
- await fetch(
- `/api/session?username=${user.username}`
- );
-
- const d =
- await r.json();
-
- document.getElementById(
- 'saldo'
- ).innerText =
- 'Rp ' +
- Number(
- d.saldo || 0
- ).toLocaleString('id-ID');
-
+ document.getElementById("saldo").innerText =
+ "Saldo: Rp " + Number(d.saldo || 0).toLocaleString("id-ID");
 }
 
-loadUser();
+loadSaldo();
 
 async function withdraw(){
 
- const nominal =
- document.getElementById('nominal').value;
+ const nominal = document.getElementById('nominal').value;
+ const dana = document.getElementById('dana').value;
+ const nomor = document.getElementById('nomor').value;
+ const atasNama = document.getElementById('atasNama').value;
 
- const dana =
- document.getElementById('dana').value;
-
- const nomor =
-document.getElementById('nomor').value;
-
- const atasNama =
- document.getElementById('atasNama').value;
-
- if(
- !nominal ||
- !dana ||
- !nomor ||
- !atasNama
- ){
-  return alert('Lengkapi data');
+ if(!nominal || !dana || !nomor || !atasNama){
+  return alert("Lengkapi data");
  }
 
- const r =
- await fetch(
- '/api/withdraw',
- {
+ const r = await fetch('/api/withdraw', {
   method:'POST',
-  headers:{
-   'Content-Type':
-   'application/json'
-  },
-  body:JSON.stringify({
-
+  headers:{ 'Content-Type':'application/json' },
+  body: JSON.stringify({
    username:user.username,
-
-   nominal,
-
+   nominal:Number(nominal),
    dana,
-
    nomor,
-
    atasNama
-
   })
  });
 
- const d =
- await r.json();
+ const d = await r.json();
 
  if(r.ok){
+  alert("WD berhasil diajukan");
 
-  alert(
-   'Withdraw berhasil diajukan'
-  );
+  // refresh saldo biar keliatan langsung kepotong
+  loadSaldo();
 
- }else{
-
-  alert(
-   d.error
-  );
-
+ } else {
+  alert(d.error);
  }
 
 }
