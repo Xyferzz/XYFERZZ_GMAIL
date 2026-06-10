@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setor Gmail</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  padding:20px;
+  font-family:'Inter',sans-serif;
+  background:#05070d;
+  color:#eaf6ff;
+}
+
+/* TOMBOL KEMBALI */
+.back-btn{
+  position:fixed;
+  top:15px;
+  left:15px;
+  padding:10px 14px;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:800;
+  font-size:13px;
+  color:#eaf6ff;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(0,200,255,0.25);
+  backdrop-filter:blur(12px);
+  box-shadow:0 0 15px rgba(0,200,255,0.15);
+  transition:.25s;
+  z-index:999;
+}
+
+.back-btn:hover{
+  transform:translateY(-2px);
+  border-color:#00d0ff;
+  box-shadow:0 0 20px rgba(0,208,255,0.3);
+}
+
+.container{
+  max-width:520px;
+  margin:60px auto 0;
+}
+
+/* CARD */
+.card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(0,200,255,0.2);
+  border-radius:16px;
+  padding:16px;
+  margin-top:15px;
+  backdrop-filter:blur(15px);
+}
+
+/* HEADER */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:12px;
+  color:#7fa7c7;
+  margin-bottom:10px;
+}
+
+/* TITLE */
+.title{
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+/* INPUT */
+input,
+textarea{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:12px;
+  border:1px solid rgba(0,200,255,0.25);
+  background:rgba(0,0,0,0.3);
+  color:#fff;
+  outline:none;
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+}
+
+input::placeholder,
+textarea::placeholder{
+  color:#7fa7c7;
+}
+
+input:focus,
+textarea:focus{
+  border-color:#00d0ff;
+  box-shadow:0 0 15px rgba(0,208,255,.2);
+}
+
+textarea{
+  min-height:140px;
+  resize:none;
+}
+
+/* BUTTON */
+.btn{
+  width:100%;
+  padding:14px;
+  margin-top:14px;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:900;
+  font-size:14px;
+  background:linear-gradient(90deg,#00d0ff,#0066ff);
+  color:#001018;
+  box-shadow:0 0 25px rgba(0,200,255,0.25);
+  transition:.25s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+}
+
+/* RULES */
+.rules{
+  font-size:13px;
+  color:#7fa7c7;
+  line-height:1.7;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- BUTTON BALIK -->
+<a href="dashboard.html" class="back-btn">
+  ← Dashboard
+</a>
+
+<div class="container">
+
+  <!-- RULES -->
+  <div class="card">
+
+    <div class="header">
+      <div><b>Rules Gmail</b></div>
+      <div>24 Juni 2026</div>
+    </div>
+
+    <div class="rules">
+      1. Gmail harus valid<br>
+      2. Tidak boleh spam<br>
+      3. Pastikan format benar<br>
+      4. Jika salah akan ditolak
+    </div>
+
+  </div>
+
+  <!-- FORM SETOR -->
+  <div class="card">
+
+    <div class="title">Kolom Setor Gmail</div>
+
+    <input type="text" placeholder="Nama">
+
+    <input type="text" placeholder="Nomor WhatsApp">
+
+    <textarea placeholder="Gmail (1 per baris)
+
+contoh:
+gmail1@gmail.com
+gmail2@gmail.com"></textarea>
+
+    <button class="btn">
+      SETORKAN GMAIL
+    </button>
+
+  </div>
+
+</div>
+
+</body>
+</html>
