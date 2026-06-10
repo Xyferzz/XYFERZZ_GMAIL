@@ -96,7 +96,13 @@ body{
 .form{
   display:flex;
   flex-direction:column;
-  gap:18px;
+  gap:14px;
+  transition:all .35s ease;
+}
+
+.form.hide{
+  opacity:0;
+  transform:translateX(30px);
 }
 
 input{
@@ -173,6 +179,20 @@ input::placeholder{
   }
 }
 
+  .card{
+  animation:showCard .8s ease;
+}
+
+@keyframes showCard{
+  from{
+    opacity:0;
+    transform:translateY(30px) scale(.95);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
 </style>
 </head>
 <body>
@@ -240,24 +260,46 @@ const registerTab=document.getElementById('registerTab');
 const submitBtn=document.getElementById('submitBtn');
 const info=document.getElementById('info');
 
+const form=document.querySelector('.form');
+
+function switchMode(newMode){
+
+  form.classList.add('hide');
+
+  setTimeout(()=>{
+
+    mode=newMode;
+
+    if(mode==='login'){
+
+      loginTab.classList.add('active');
+      registerTab.classList.remove('active');
+
+      submitBtn.innerText='SIGN IN';
+      info.innerText='Login ke akun kamu';
+
+    }else{
+
+      registerTab.classList.add('active');
+      loginTab.classList.remove('active');
+
+      submitBtn.innerText='CREATE ACCOUNT';
+      info.innerText='Buat akun baru';
+
+    }
+
+    form.classList.remove('hide');
+
+  },250);
+
+}
+
 loginTab.onclick=()=>{
-  mode='login';
-
-  loginTab.classList.add('active');
-  registerTab.classList.remove('active');
-
-  submitBtn.innerText='SIGN IN';
-  info.innerText='Login ke akun kamu';
+  switchMode('login');
 };
 
 registerTab.onclick=()=>{
-  mode='register';
-
-  registerTab.classList.add('active');
-  loginTab.classList.remove('active');
-
-  submitBtn.innerText='CREATE ACCOUNT';
-  info.innerText='Buat akun baru';
+  switchMode('register');
 };
 
 submitBtn.onclick=async()=>{
