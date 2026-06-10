@@ -41,18 +41,11 @@ body{
   z-index:999;
 }
 
-.back-btn:hover{
-  transform:translateY(-2px);
-  border-color:#00d0ff;
-  box-shadow:0 0 20px rgba(0,208,255,0.3);
-}
-
 .container{
   max-width:520px;
   margin:60px auto 0;
 }
 
-/* CARD */
 .card{
   background:rgba(255,255,255,0.04);
   border:1px solid rgba(0,200,255,0.2);
@@ -62,7 +55,6 @@ body{
   backdrop-filter:blur(15px);
 }
 
-/* HEADER */
 .header{
   display:flex;
   justify-content:space-between;
@@ -72,14 +64,12 @@ body{
   margin-bottom:10px;
 }
 
-/* TITLE */
 .title{
   font-size:18px;
   font-weight:900;
   margin-bottom:10px;
 }
 
-/* INPUT */
 input,
 textarea{
   width:100%;
@@ -94,23 +84,11 @@ textarea{
   font-size:14px;
 }
 
-input::placeholder,
-textarea::placeholder{
-  color:#7fa7c7;
-}
-
-input:focus,
-textarea:focus{
-  border-color:#00d0ff;
-  box-shadow:0 0 15px rgba(0,208,255,.2);
-}
-
 textarea{
   min-height:140px;
   resize:none;
 }
 
-/* BUTTON */
 .btn{
   width:100%;
   padding:14px;
@@ -122,19 +100,22 @@ textarea{
   font-size:14px;
   background:linear-gradient(90deg,#00d0ff,#0066ff);
   color:#001018;
-  box-shadow:0 0 25px rgba(0,200,255,0.25);
-  transition:.25s;
 }
 
-.btn:hover{
-  transform:translateY(-2px);
+.btn:disabled{
+  opacity:.6;
 }
 
-/* RULES */
 .rules{
   font-size:13px;
   color:#7fa7c7;
   line-height:1.7;
+}
+
+.status{
+  margin-top:12px;
+  font-size:13px;
+  text-align:center;
 }
 
 </style>
@@ -142,16 +123,13 @@ textarea{
 
 <body>
 
-<!-- BUTTON BALIK -->
-<a href="dashboard.html" class="back-btn">
+<a href="/dashboard.html" class="back-btn">
   ← Dashboard
 </a>
 
 <div class="container">
 
-  <!-- RULES -->
   <div class="card">
-
     <div class="header">
       <div><b>Rules Gmail</b></div>
       <div>24 Juni 2026</div>
@@ -163,31 +141,99 @@ textarea{
       3. Pastikan format benar<br>
       4. Jika salah akan ditolak
     </div>
-
   </div>
 
-  <!-- FORM SETOR -->
   <div class="card">
 
     <div class="title">Kolom Setor Gmail</div>
 
-    <input type="text" placeholder="Nama">
+    <input id="nama" type="text" placeholder="Nama">
 
-    <input type="text" placeholder="Nomor WhatsApp">
+    <input id="wa" type="text" placeholder="Nomor WhatsApp">
 
-    <textarea placeholder="Gmail (1 per baris)
+    <textarea id="gmailList" placeholder="Gmail (1 per baris)
 
 contoh:
 gmail1@gmail.com
 gmail2@gmail.com"></textarea>
 
-    <button class="btn">
+    <button id="submitBtn" class="btn" onclick="kirimSetoran()">
       SETORKAN GMAIL
     </button>
+
+    <div class="status" id="status"></div>
 
   </div>
 
 </div>
+
+<script>
+
+async function kirimSetoran(){
+
+  const nama = document.getElementById("nama").value.trim();
+  const wa = document.getElementById("wa").value.trim();
+  const gmailList = document.getElementById("gmailList").value.trim();
+
+  const status = document.getElementById("status");
+  const btn = document.getElementById("submitBtn");
+
+  if(!nama || !wa || !gmailList){
+    status.innerHTML = "❌ Lengkapi semua data";
+    return;
+  }
+
+  const totalGmail = gmailList
+    .split("\n")
+    .filter(x => x.trim() !== "")
+    .length;
+
+  btn.disabled = true;
+  status.innerHTML = "⏳ Mengirim setoran...";
+
+  try{
+
+    const res = await fetch("/api/send",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        username:nama,
+        nama,
+        wa,
+        gmailList,
+        totalGmail
+      })
+    });
+
+    const data = await res.json();
+
+    if(data.success){
+
+      status.innerHTML = "✅ Setoran berhasil dikirim";
+
+      document.getElementById("nama").value = "";
+      document.getElementById("wa").value = "";
+      document.getElementById("gmailList").value = "";
+
+    }else{
+
+      status.innerHTML = "❌ " + (data.error || "Gagal mengirim");
+
+    }
+
+  }catch(err){
+
+    status.innerHTML = "❌ " + err.message;
+
+  }
+
+  btn.disabled = false;
+
+}
+
+</script>
 
 </body>
 </html>
